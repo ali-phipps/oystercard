@@ -19,16 +19,18 @@ class Oystercard
   def touch_in(origin)
     raise "Balance too low to touch in. Minimum balance is £#{MINIMUM_BALANCE}" if @balance < MINIMUM_BALANCE
 
-    @current_journey[:origin] = origin
+    
   end
 
   def touch_out(destination)
     deduct(1)
+    # TODO move to new journey class
     @current_journey[:destination] = destination
     @journey_history << @current_journey
     @current_journey = {}
   end
 
+  # TODO move ?
   def in_journey?
     @current_journey.key?(:origin) && !@current_journey.key?(:destination)
   end

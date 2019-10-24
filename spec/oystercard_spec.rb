@@ -5,40 +5,19 @@ describe Oystercard do
   let(:origin) { double :station }
   let(:destination) { double :station }
 
-  context 'new card' do
-    it 'initialise oystercard with balance of 0' do
-      expect(card.balance).to eq 0
-    end
+  # context 'with balance and touch in' do
+  #   before do
+  #     card.top_up(50)
+  #     card.touch_in(origin)
+  #   end
+  #
 
-    it 'in journey? is false' do
-      expect(card).not_to be_in_journey
-    end
-
-    it 'journey history is empty' do
-      expect(card.journey_history).to be_empty
-    end
-  end
-
-  context 'with balance and touch in' do
-    before do
-      card.top_up(50)
-      card.touch_in(origin)
-    end
-
-    it 'sets journey status' do
-      expect(card).to be_in_journey
-    end
-  end
 
   context 'with balance, touch in and touch out' do
     before do
       card.top_up(50)
       card.touch_in(origin)
       card.touch_out(destination)
-    end
-
-    it 'touch out card sets journey status' do
-      expect(card).not_to be_in_journey
     end
 
     it 'touch out card reduces balance by minimum fare' do
