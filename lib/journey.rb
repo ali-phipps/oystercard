@@ -4,7 +4,6 @@ class Journey
   end
 
   def start_station(entry_station)
-
     @current_journey[:origin] = entry_station
     @current_journey
   end
@@ -15,11 +14,13 @@ class Journey
   end
 
   def fare
-    if @current_journey[:destination].nil? or @current_journey[:origin].nil? 
-      6
-    else
-      1
-    end
+    return Oystercard::PENALTY_FARE unless complete?
+    return Oystercard::MINIMUM_FARE
+
+  end
+
+  def complete?
+    !(@current_journey[:destination].nil? or @current_journey[:origin].nil?)
   end
 
 end
