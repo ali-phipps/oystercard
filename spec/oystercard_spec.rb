@@ -11,15 +11,12 @@ describe Oystercard do
       card.touch_in(origin)
       card.touch_out(destination)
     end
-
-
-
     it 'touch out card updates journey history' do
       expect(card.journey_history).to eq([{ origin: origin, destination: destination }])
     end
 
     it 'creates one journey after touch in and out' do
-      expect(card.journey_history.length).to eq Oystercard::MINIMUM_FARE
+      expect(card.journey_history.length).to eq 1
     end
   end
 
@@ -54,12 +51,29 @@ describe Oystercard do
     end
   end
 
-  # context 'with balance' do
-  #   before { card.top_up(50) }
-  #
-  #   it 'charges penalty fare' do
-  #     expect { card.touch_in(destination) }.to change{ card.balance }.by -Oystercard::PENALTY_FARE
-  #   end
-  # end
+  context 'with balance' do
+    before { card.top_up(50) }
+
+    it 'charges penalty fare' do
+      card.touch_in(origin)
+      expect{ card.touch_in(origin) }.to change{ card.balance }.by -Oystercard::PENALTY_FARE
+    end
+
+    it 'one complete journey, two touch ins' do
+    expect {
+      card.touch_in(origin)
+      card.touch_out(destination)
+      card.touch_in(origin)
+       card.touch_in(origin) }.to change{ card.balance }.by  -(Oystercard::PENALTY_FARE + Oystercard::MINIMUM_FARE)
+    end
+
+    it 'touch in twice, get penalty fare, touchin  touch out' do
+      expect {
+        card.touch_in(origin)
+        card.touch_in(origin)
+        card.touch_out(destination) }.to change{ card.balance}.by -(Oystercard::PENALTY_FARE + Oystercard::MINIMUM_FARE)
+    end
+
+  end
 
 end
