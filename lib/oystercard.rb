@@ -7,7 +7,7 @@ class Oystercard
 
   def initialize
     @balance = 0
-    @journey_history = []
+    @journey_history = [] # this needs to move to journey_log
   end
 
   def top_up(value)
@@ -16,7 +16,7 @@ class Oystercard
     @balance += value
   end
 
-  def touch_in(origin)
+  def touch_in(origin) # some functionality needs to move i.e. journey started
     raise "Balance too low to touch in. Minimum balance is £#{ MINIMUM_FARE }" if @balance < MINIMUM_FARE
 
     if @journey.nil?
@@ -30,19 +30,19 @@ class Oystercard
     end
   end
 
-  def touch_out(destination)
+  def touch_out(destination) # some functionality needs to move to journey finish
     if @journey.complete?
       @journey = Journey.new
     end
-    
-      @journey.end_station(destination)
+
+      @journey.end_station(destination) # anything which involves writing to journey history needs to move.
       @journey_history << @journey.current_journey
       deduct(@journey.fare)
   end
 
   private
 
-  def start_journey(origin)
+  def start_journey(origin) # this needs to move
     @journey = Journey.new
     @journey.start_station(origin)
   end
