@@ -2,8 +2,8 @@ require 'journey'
 
 describe Journey do
   subject(:journey) { Journey.new }
-  let(:entry_station) { double(:station)}
-  let(:exit_station) { double(:station)}
+  let(:entry_station) { double(:station) }
+  let(:exit_station) { double(:station) }
 
   context 'start_station set' do
     before { journey.start_station(entry_station) }
